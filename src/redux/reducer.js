@@ -1,44 +1,34 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = [];
+const initialState = {
+  todos: [],
+};
 
 const addTodoReducer = createSlice({
   name: "todos",
   initialState,
   reducers: {
-    //here we will write our reducer
-    //Adding todos
+    // Adding todos
     addTodos: (state, action) => {
-      state.push(action.payload);
-      return state;
+      state.todos.push(action.payload); // Directly modify the todos array
     },
-    //remove todos
+    // Remove todos
     removeTodos: (state, action) => {
-      return state.filter((item) => item.id !== action.payload);
+      state.todos = state.todos.filter((item) => item.id !== action.payload); // Directly modify state.todos
     },
-    //update todos
+    // Update todos
     updateTodos: (state, action) => {
-      return state.map((todo) => {
-        if (todo.id === action.payload.id) {
-          return {
-            ...todo,
-            item: action.payload.item,
-          };
-        }
-        return todo;
-      });
+      const index = state.todos.findIndex((todo) => todo.id === action.payload.id); // Find index of the todo to update
+      if (index !== -1) {
+        state.todos[index].item = action.payload.item; // Directly update the todo item
+      }
     },
-    //completed
+    // Mark todo as completed
     completeTodos: (state, action) => {
-      return state.map((todo) => {
-        if (todo.id === action.payload) {
-          return {
-            ...todo,
-            completed: true,
-          };
-        }
-        return todo;
-      });
+      const index = state.todos.findIndex((todo) => todo.id === action.payload); // Find index of the todo to complete
+      if (index !== -1) {
+        state.todos[index].completed = true; // Directly mark as completed
+      }
     },
   },
 });

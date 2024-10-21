@@ -3,21 +3,11 @@ import { connect } from "react-redux";
 import { addTodos } from "../redux/reducer";
 import { GoPlus } from "react-icons/go";
 import { motion } from "framer-motion";
-
-const mapStateToProps = (state) => {
-  return {
-    todos: state,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addTodo: (obj) => dispatch(addTodos(obj)),
-  };
-};
+import {  useDispatch } from 'react-redux'
 
 const Todos = (props) => {
   const [todo, setTodo] = useState("");
+  const dispatch = useDispatch()
 
   const handleChange = (e) => {
     setTodo(e.target.value);
@@ -27,11 +17,12 @@ const Todos = (props) => {
     if (todo === "") {
       alert("Input is Empty");
     } else {
-      props.addTodo({
+      dispatch(addTodos({
         id: Math.floor(Math.random() * 1000),
         item: todo,
         completed: false,
-      });
+      }));
+      console.log("done")
       setTodo("");
     }
   };
@@ -57,5 +48,5 @@ const Todos = (props) => {
     </div>
   );
 };
-//we can use connect method to connect this component with redux store
-export default connect(mapStateToProps, mapDispatchToProps)(Todos);
+
+export default Todos;
